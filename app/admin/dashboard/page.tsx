@@ -1,4 +1,3 @@
-// app/admin/dashboard/page.tsx
 "use client";
 
 import { useSession } from "next-auth/react";
@@ -10,7 +9,6 @@ export default function AdminDashboard() {
   const router = useRouter();
 
   useEffect(() => {
-    // Redirige si l'utilisateur n'est pas admin
     if (status === "authenticated" && session.user?.role !== "ADMIN") {
       router.push("/");
       //   else créer une page auth pour admin !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

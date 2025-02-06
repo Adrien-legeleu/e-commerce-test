@@ -28,7 +28,6 @@ export default function Register() {
       if (!res.ok) {
         setError(data.error || "Erreur lors de l'inscription");
       } else {
-        // Une fois inscrit, rediriger vers la page de connexion ou se connecter automatiquement
         router.push("/auth/signin");
       }
     } catch (err) {
