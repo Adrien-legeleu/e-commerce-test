@@ -1,29 +1,17 @@
-// app/auth/signin/page.tsx
 "use client";
 
-import { getProviders, signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { signIn } from "next-auth/react";
+import { useState } from "react";
 
 export default function SignIn() {
-  const [providers, setProviders] = useState<any>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  useEffect(() => {
-    (async () => {
-      const prov = await getProviders();
-      setProviders(prov);
-    })();
-  }, []);
-
-  const router = useRouter();
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
       <h1 className="text-2xl font-bold mb-4">Se connecter</h1>
 
-      {/* Formulaire pour le Credentials Provider */}
       <form
         onSubmit={async (e) => {
           e.preventDefault();
@@ -34,11 +22,10 @@ export default function SignIn() {
           });
 
           console.log("Résultat de signIn:", res);
-          // Si la connexion est réussie, redirige
+
           if (res?.ok) {
-            router.push("/");
+            window.location.href = "/";
           } else {
-            // Vous pouvez afficher une erreur à l'utilisateur
             console.error("Erreur lors de la connexion :", res?.error);
           }
         }}
@@ -58,25 +45,19 @@ export default function SignIn() {
           onChange={(e) => setPassword(e.target.value)}
           className="border p-2 rounded"
         />
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded">
+        <Button type="submit" variant={"destructive"}>
           Connexion
-        </button>
+        </Button>
       </form>
 
-      {/* Boutons pour les autres providers */}
-      {providers &&
-        Object.values(providers)
-          .filter((provider: any) => provider.id !== "credentials")
-          .map((provider: any) => (
-            <div key={provider.name} className="mb-4">
-              <button
-                onClick={() => signIn(provider.id)}
-                className="bg-gray-200 p-2 rounded"
-              >
-                Se connecter avec {provider.name}
-              </button>
-            </div>
-          ))}
+      <div className="gap-2 flex flex-col">
+        <Button onClick={() => signIn("github")}>
+          Se connecter avec githubs
+        </Button>
+        <Button onClick={() => signIn("google")}>
+          Se connecter avec google
+        </Button>
+      </div>
     </div>
   );
 }
