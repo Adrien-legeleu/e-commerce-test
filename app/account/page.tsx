@@ -1,10 +1,10 @@
-import Account from "@/components/account/Account";
+import Info from "@/components/account/Info";
 import React from "react";
 
 export default function page() {
   return (
     <div>
-      <Account />
+      <Info />
     </div>
   );
 }

@@ -13,8 +13,9 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+import AdminSIgnIn from "../admin/AdminSignIn";
 
-export default function Account() {
+export default function AccountAdmin() {
   const { data: session } = useSession();
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
@@ -39,7 +40,7 @@ export default function Account() {
       } else {
         console.log("success");
 
-        window.location.href = "/";
+        window.location.reload();
       }
     } catch (error) {
       setError("Errur réseau");
@@ -47,20 +48,20 @@ export default function Account() {
     }
   };
   return (
-    <div className="h-screen w-full items-center justify-center flex">
+    <div className="flex flex-col justify-center items-center gap-1">
       {session?.user.role == "USER" ? (
-        <Link href={"admin/dashboard"}>
-          <Button>Devenir admin</Button>
-        </Link>
+        <AdminSIgnIn />
       ) : (
         <Link href={"admin/dashboard"}>
-          <Button>votre dashboard</Button>
+          <Button variant={"outline"}>votre dashboard</Button>
         </Link>
       )}
       {session?.user.role === "ADMIN" && (
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant="outline">Se déconnecter de l'admin</Button>
+            <span className="text-xs text-neutral-700 py-2 cursor-pointer">
+              Se déconnecter de l'admin
+            </span>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>

@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import {
   Dialog,
@@ -18,7 +17,7 @@ export default function AdminSIgnIn() {
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
   const { data: session } = useSession();
-  const router = useRouter();
+
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
@@ -40,7 +39,7 @@ export default function AdminSIgnIn() {
       } else {
         console.log("success");
 
-        window.location.reload();
+        window.location.href = "/admin/dashboard";
       }
     } catch (error) {
       setError("Errur réseau");
@@ -49,7 +48,7 @@ export default function AdminSIgnIn() {
   };
 
   return (
-    <div className="h-screen w-full flex items-center justify-center flex-col gap-10">
+    <div>
       <Dialog>
         <DialogTrigger asChild>
           <Button variant="outline">devenir admin</Button>

@@ -11,37 +11,42 @@ export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
   providers: [
-    GithubProvider({
-      clientId: process.env.GITHUB_ID as string,
-      clientSecret: process.env.GITHUB_SECRET as string,
-    }),
-    // CredentialsProvider({
-    //   name: "Credentials",
-    //   credentials: {
-    //     email: {
-    //       label: "Email",
-    //       type: "email",
-    //       placeholder: "john@example.com",
-    //     },
-    //     password: { label: "Mot de passe", type: "password" },
-    //   },
-    //   async authorize(credentials) {
-    //     if (!credentials?.email || !credentials?.password) {
-    //       throw new Error("Email et mot de passe requis");
-    //     }
-    //     const user = await prisma.user.findUnique({
-    //       where: { email: credentials.email },
-    //     });
-    //     if (!user || !user.password) {
-    //       throw new Error("Utilisateur non trouvé");
-    //     }
-    //     const isValid = await compare(credentials.password, user.password);
-    //     if (!isValid) {
-    //       throw new Error("Mot de passe incorrect");
-    //     }
-    //     return user;
-    //   },
+    // GithubProvider({
+    //   clientId: process.env.GITHUB_CLIENT_ID as string,
+    //   clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     // }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      allowDangerousEmailAccountLinking: true,
+    }),
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: {
+          label: "Email",
+          type: "email",
+          placeholder: "john@example.com",
+        },
+        password: { label: "Mot de passe", type: "password" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("Email et mot de passe requis");
+        }
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email },
+        });
+        if (!user || !user.password) {
+          throw new Error("Utilisateur non trouvé");
+        }
+        const isValid = await compare(credentials.password, user.password);
+        if (!isValid) {
+          throw new Error("Mot de passe incorrect");
+        }
+        return user;
+      },
+    }),
   ],
   callbacks: {
     async jwt({ token, user }) {

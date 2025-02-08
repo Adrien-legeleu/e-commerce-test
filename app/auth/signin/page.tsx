@@ -1,15 +1,22 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+// import { IconArrowBackUp } from "@tabler/icons-react";
 import { signIn } from "next-auth/react";
+// import Link from "next/link";
 import { useState } from "react";
 
-export default function SignIn() {
+export default function page() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
+      {/* <div className="absolute top-10 left-10 bg-neutral-100 rounded-full p-1 w-16 h-10 flex items-center justify-center">
+        <Link href={"/"} onClick={()=>} className="w-full h-full">
+          <IconArrowBackUp className="w-full h-full" stroke={2} />
+        </Link>
+      </div> */}
       <h1 className="text-2xl font-bold mb-4">Se connecter</h1>
 
       <form
@@ -51,10 +58,7 @@ export default function SignIn() {
       </form>
 
       <div className="gap-2 flex flex-col">
-        <Button onClick={() => signIn("github")}>
-          Se connecter avec githubs
-        </Button>
-        <Button onClick={() => signIn("google")}>
+        <Button onClick={() => signIn("google", { callbackUrl: "/" })}>
           Se connecter avec google
         </Button>
       </div>

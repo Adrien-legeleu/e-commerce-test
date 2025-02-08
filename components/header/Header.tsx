@@ -29,7 +29,7 @@ export default function Header() {
   };
 
   return (
-    <div className="grid grid-cols-3 py-4 items-center px-12 fixed left-0 top-0 w-full">
+    <div className="grid grid-cols-3 py-4 items-center px-12 z-50  w-full">
       <ul className="flex justify-start gap-5 items-center">
         <li>Homme</li>
         <li>Femme</li>
@@ -84,11 +84,10 @@ export default function Header() {
                 <Link href={"/account"}>
                   <Button variant={"ghost"}>Aperçu de mon compte</Button>
                 </Link>
-                {session?.user.role == "ADMIN" && (
-                  <Link href={"admin/dashboard"}>
-                    <Button variant={"ghost"}>votre dashboard</Button>
-                  </Link>
-                )}
+
+                <Link href={"admin/dashboard"}>
+                  <Button variant={"ghost"}>votre dashboard</Button>
+                </Link>
               </div>
             </DropdownMenuContent>
             <Link href={"/favorite"}>
