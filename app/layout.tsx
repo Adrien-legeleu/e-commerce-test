@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/header/Header";
 import SessionWrapper from "@/components/ui/SessionWrapper";
+import HeaderWrapper from "@/components/header/HeaderWrapper";
 
 export const metadata: Metadata = {
   title: "Ecommerce app ",
@@ -16,12 +16,12 @@ export default function RootLayout({
   return (
     <SessionWrapper>
       <html lang="fr">
-        <body className={` antialiased`}>
+        <body className={` antialiased `}>
           {" "}
           <header>
-            <Header />
+            <HeaderWrapper />
           </header>
-          {children}
+          <main>{children}</main>
         </body>
       </html>
     </SessionWrapper>

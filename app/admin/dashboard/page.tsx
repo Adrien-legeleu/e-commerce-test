@@ -1,27 +1,41 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+
+import AdminSIgnIn from "@/components/admin/AdminSignIn";
+import Dashboard from "@/components/dashBoard/Dashboard";
+import { Category, Sexe } from "@prisma/client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import AdminSIgnIn from "@/components/admin/AdminSignIn";
+
+export interface ProductType {
+  id: string;
+  name: string;
+  description: string | null;
+  stock: number;
+  price: number;
+  category: Category;
+  sexe: Sexe;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+}
 
 export default function AdminDashboard() {
   const { data: session, status } = useSession();
   const router = useRouter();
-
-  // useEffect(() => {
-  //   if (status === "authenticated" && session.user?.role !== "ADMIN") {
-  //     router.push("admin/dashboard/signin");
-  //   }
-  // }, [status, session, router]);
-
+  useEffect(() => {
+    if (status == "unauthenticated" && !session) {
+      router.push("/auth/signin");
+    }
+  }, [router, status]);
   if (status === "loading") return <p>Chargement...</p>;
 
   return (
-    <div className="h-screen w-full flex items-center justify-center flex-col">
+    <div className="w-full h-[calc(100vh-64px)] pb-20 flex items-center justify-center flex-col">
       <h1>Dashboard Admin</h1>
-      {session?.user.role === "ADMIN" ? (
-        <div>Bienvenur sur votre dashboard</div>
+      {session?.user.role === "ADMIN" && session?.user.id ? (
+        <Dashboard />
       ) : (
         <AdminSIgnIn />
       )}

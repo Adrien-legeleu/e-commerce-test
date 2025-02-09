@@ -1,3 +1,5 @@
+import { Sidebar } from "@/components/account/SideBar";
+import Header from "@/components/header/Header";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -10,5 +12,10 @@ export default function AuthLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div>{children}</div>;
+  return (
+    <div className="flex  gap-10">
+      <Sidebar />
+      <div className="p-10">{children}</div>
+    </div>
+  );
 }

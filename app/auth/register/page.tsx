@@ -3,6 +3,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function page() {
   const router = useRouter();
@@ -64,15 +66,15 @@ export default function page() {
           className="border p-2 rounded"
         />
         {error && <p className="text-red-500">{error}</p>}
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded">
+        <Button type="submit" className="bg-blue-500 text-white p-2 rounded">
           S'inscrire
-        </button>
+        </Button>
       </form>
       <p>
         Vous avez déjà un compte ?{" "}
-        <a href="/auth/signin" className="text-blue-500 underline">
+        <Link href="/auth/signin" className="text-blue-500 underline">
           Se connecter
-        </a>
+        </Link>
       </p>
     </div>
   );

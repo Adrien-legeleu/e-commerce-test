@@ -1,29 +1,17 @@
 "use client";
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
-
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarFooter,
-} from "@/components/ui/sidebar";
+import { Home, Inbox, Settings } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { IconChevronUp, IconCirclePlusFilled } from "@tabler/icons-react";
 import AccountAdmin from "./AccountAdmin";
 import { Button } from "../ui/button";
 import { signOut } from "next-auth/react";
-import { redirect } from "next/dist/server/api-utils";
+
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const items = [
   {
@@ -55,71 +43,58 @@ const items = [
   },
 ];
 
-export function AppSidebar() {
+export function Sidebar() {
   const router = useRouter();
   const handleSignOut = () => {
     signOut({ redirect: false });
     router.push("/");
   };
   return (
-    <Sidebar className="top-0">
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url} className="flex flex-col items-start">
-                      <div className="flex items-center">
-                        <item.icon className="mr-2" />
-                        <span>{item.title}</span>
-                      </div>
-                      {item.subtitles && (
-                        <div className="mt-1">
-                          {item.subtitles.map((subtitle, index) => (
-                            <a
-                              key={index}
-                              href={subtitle.url}
-                              className="block text-sm text-muted-foreground"
-                            >
-                              {subtitle.text}
-                            </a>
-                          ))}
-                        </div>
-                      )}
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-      <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
-                  <IconCirclePlusFilled /> PLUS
-                  <IconChevronUp className="ml-auto" />
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                side="top"
-                className="w-[--radix-popper-anchor-width] flex items-center justify-center flex-col gap-4 p-4"
-              >
-                <AccountAdmin />
-                <Button variant={"destructive"} onClick={handleSignOut}>
-                  Se déconnecter
-                </Button>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
-    </Sidebar>
+    <div className="p-10 h-[calc(100vh-64px)]  flex flex-col justify-between rounded-3xl shadow-2xl shadow-black/20 bg-neutral-50">
+      <div className="space-y-5">
+        {items.map((item) => (
+          <div key={item.title} className="space-y-2">
+            <Link href={item.url} className="flex flex-col items-start">
+              <div className="flex items-center">
+                <item.icon className="mr-2" />
+                <span>{item.title}</span>
+              </div>
+            </Link>
+            <div className="">
+              {item.subtitles && (
+                <div className="mt-1">
+                  {item.subtitles.map((subtitle, index) => (
+                    <Link
+                      key={index}
+                      href={subtitle.url}
+                      className="block text-sm text-muted-foreground"
+                    >
+                      {subtitle.text}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant={"secondary"}>
+            <IconCirclePlusFilled /> PLUS
+            <IconChevronUp className="ml-auto" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          side="top"
+          className="w-[--radix-popper-anchor-width] flex items-center justify-center flex-col gap-4 p-4"
+        >
+          <AccountAdmin />
+          <Button variant={"destructive"} onClick={handleSignOut}>
+            Se déconnecter
+          </Button>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 }

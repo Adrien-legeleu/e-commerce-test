@@ -1,9 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-// import { IconArrowBackUp } from "@tabler/icons-react";
 import { signIn } from "next-auth/react";
-// import Link from "next/link";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function page() {
@@ -62,6 +61,12 @@ export default function page() {
           Se connecter avec google
         </Button>
       </div>
+      <p className="mt-2">
+        Vous n'avez pas de compte ?{" "}
+        <Link href="/auth/register" className="text-blue-500 underline">
+          S'inscrire
+        </Link>
+      </p>
     </div>
   );
 }
