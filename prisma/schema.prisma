@@ -24,7 +24,7 @@ model Product {
   name        String
   description String?
   stock       Int      @default(0)
-  price       Int
+  price       Int      @default(20)
   category    Category @default(COLLIER)
   sexe        Sexe     @default(FEMME)
   createdAt   DateTime @default(now())

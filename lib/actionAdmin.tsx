@@ -3,35 +3,42 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "./prisma";
 import { Category, Sexe } from "@prisma/client";
+import { formDataProps } from "@/components/dashBoard/product/Create";
 
 export const getAllProducts = async (userId: string) => {
   const products = await prisma.product.findMany({ where: { userId } });
   return products;
 };
 
-export const createProduct = async (formData: FormData) => {
-  const name = formData.get("name") as string;
-  const description = formData.get("description") as string;
-  const price = parseFloat(formData.get("price") as string);
-  const stock = parseInt(formData.get("stock") as string, 10);
-  const sexe = formData.get("sexe") as Sexe;
-  const category = formData.get("category") as Category;
-  const userId = formData.get("userId") as string;
-  if (!name || !sexe || !category || !price || !stock || !userId) {
+export const createProduct = async (formData: formDataProps) => {
+  const { name, description, stock, price, sexe, category, userId } = formData;
+
+  if (
+    !name?.trim() ||
+    !sexe ||
+    !category ||
+    price === null ||
+    price === undefined ||
+    stock === null ||
+    stock === undefined ||
+    !userId?.trim()
+  ) {
     throw new Error(
-      "Tous les champs champs mise à part 'desciption' doivent être requis !"
+      "Tous les champs (sauf 'description') doivent être remplis !"
     );
   }
-  await prisma.product.create({
+
+  const product = await prisma.product.create({
     data: {
       userId,
-      stock,
+      stock: parseInt(stock),
       sexe,
       category,
-      price,
+      price: parseFloat(price),
       name,
       description,
     },
   });
-  revalidatePath("/admin/dashboard");
+
+  return product;
 };
