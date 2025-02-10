@@ -17,7 +17,7 @@ import { Category, Sexe } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState, ChangeEvent, useEffect } from "react";
 
-export interface formDataProps {
+export interface formDataCreateProps {
   name: string;
   price: string;
   description: string;
@@ -31,7 +31,7 @@ export default function Create() {
   const { userId, status } = getuserId();
   const router = useRouter();
 
-  const [formData, setFormData] = useState<formDataProps>({
+  const [formData, setFormData] = useState<formDataCreateProps>({
     name: "",
     price: "20",
     stock: "1",
@@ -60,7 +60,10 @@ export default function Create() {
     }));
   };
 
-  const handleSelectChange = (name: keyof formDataProps, value: string) => {
+  const handleSelectChange = (
+    name: keyof formDataCreateProps,
+    value: string
+  ) => {
     setFormData((prevData) => ({
       ...prevData,
       [name]: value as Sexe | Category,

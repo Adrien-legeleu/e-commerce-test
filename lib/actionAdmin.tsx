@@ -3,14 +3,21 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "./prisma";
 import { Category, Sexe } from "@prisma/client";
-import { formDataProps } from "@/components/dashBoard/product/Create";
+import { formDataCreateProps } from "@/components/dashBoard/product/Create";
 
 export const getAllProducts = async (userId: string) => {
   const products = await prisma.product.findMany({ where: { userId } });
   return products;
 };
 
-export const createProduct = async (formData: formDataProps) => {
+export const getProduct = async (userId: string, productId: string) => {
+  const product = await prisma.product.findUnique({
+    where: { userId, id: productId },
+  });
+  return product;
+};
+
+export const createProduct = async (formData: formDataCreateProps) => {
   const { name, description, stock, price, sexe, category, userId } = formData;
 
   if (
@@ -41,4 +48,41 @@ export const createProduct = async (formData: formDataProps) => {
   });
 
   return product;
+};
+
+export const updateProduct = async (formData: any) => {
+  const { name, description, stock, price, sexe, category, userId, productId } =
+    formData;
+  if (!userId || !productId) {
+    throw new Error("UserId ou productId ne sont pas défini");
+  }
+  const existingProduct = await prisma.product.findUnique({
+    where: { userId, id: productId },
+  });
+  if (!existingProduct) {
+    throw new Error("product doesn't exist");
+  }
+
+  const productUpdated = await prisma.product.update({
+    where: { id: productId, userId },
+    data: {
+      name: name ?? existingProduct.name,
+      description: description ?? existingProduct.description,
+      stock: stock ?? existingProduct.stock,
+      price: price ?? existingProduct.price,
+      sexe: sexe ?? existingProduct.sexe,
+      category: category ?? existingProduct.category,
+    },
+  });
+  return productUpdated;
+};
+
+export const deleteProduct = async (productId: string, userId: string) => {
+  if (!userId || !productId) {
+    throw new Error("UserId ou productId ne sont pas défini");
+  }
+  const productDelete = await prisma.product.delete({
+    where: { userId, id: productId },
+  });
+  return productDelete;
 };
