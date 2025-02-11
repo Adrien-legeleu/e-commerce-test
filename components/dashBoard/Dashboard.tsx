@@ -25,26 +25,27 @@ export default function Dashboard() {
     }
   }, [session?.user.id]);
   return (
-    <div>
+    <div className="px-10">
       {products?.length > 0 ? (
         <div>
-          <div className="flex">
+          <div className="flex p-5 w(full items-center justify-center">
             <h2>Vos produits :</h2>
             <Link href={"/admin/dashboard/create-product"}>
               {" "}
               <Button>Ajouter un produit</Button>
             </Link>
           </div>
-          <div>
+          <div className="grid grid-cols-4 gap-8">
             {products.map((product) => {
               return (
-                <div
+                <Link
+                  href={`/admin/dashboard/${product.id}`}
                   key={product.id}
-                  className="p-8 bg-neutral-100 rounded-3xl"
+                  className="p-8 bg-neutral-100 inline-block rounded-3xl"
                 >
                   <h3>{product.name}</h3>
                   <p>{product.description}</p>
-                </div>
+                </Link>
               );
             })}
           </div>
