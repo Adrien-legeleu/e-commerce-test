@@ -6,7 +6,6 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { ProductType } from "@/app/admin/dashboard/page";
 import { IconTrashFilled } from "@tabler/icons-react";
-import { Router } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
@@ -15,7 +14,6 @@ export default function Dashboard() {
   const [products, setProducts] = useState<ProductType[]>([]);
   useEffect(() => {
     if (session?.user.id) {
-      // Déclare une fonction asynchrone à l'intérieur du useEffect
       const fetchProducts = async () => {
         try {
           const allProducts = await getAllProducts(session.user.id);
@@ -50,10 +48,9 @@ export default function Dashboard() {
     <div className="px-10">
       {products?.length > 0 ? (
         <div>
-          <div className="flex p-5 w(full items-center justify-center">
+          <div className="flex p-5 w-full items-center justify-center">
             <h2>Vos produits :</h2>
             <Link href={"/admin/dashboard/create-product"}>
-              {" "}
               <Button>Ajouter un produit</Button>
             </Link>
           </div>
