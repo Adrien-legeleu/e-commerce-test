@@ -1,6 +1,6 @@
 "use client";
 import { getProduct, updateProduct } from "@/lib/actionAdmin";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import { ProductType } from "../page";
 import { useSession } from "next-auth/react";
@@ -18,10 +18,6 @@ import {
 } from "@/components/ui/select";
 import { Category, Sexe } from "@prisma/client";
 
-interface Params {
-  id: string;
-}
-
 export interface FormDataUpdateProps {
   productId: string;
   name: string;
@@ -33,7 +29,9 @@ export interface FormDataUpdateProps {
   userId: string;
 }
 
-export default function Page({ params }: { params: Params }) {
+export default function Page() {
+  const params = useParams();
+  const productId = params.id as string;
   const router = useRouter();
   const { data: session } = useSession();
   const [isUpdated, setIsUpdated] = useState(false);
@@ -66,9 +64,9 @@ export default function Page({ params }: { params: Params }) {
     };
 
     if (session?.user.id) {
-      fetchProduct(session.user.id, params.id);
+      fetchProduct(session.user.id, productId);
     }
-  }, [session, router, params.id]);
+  }, [session, router, productId]);
 
   const handleIsUpdating = () => {
     setIsUpdated((prev) => !prev);
@@ -108,7 +106,16 @@ export default function Page({ params }: { params: Params }) {
       if (newProduct) {
         console.log("Produit modifié");
         setProduct(newProduct);
-        setFormData(newProduct);
+        setFormData({
+          productId: newProduct.id,
+          name: newProduct.name,
+          price: newProduct.price,
+          stock: newProduct.stock,
+          sexe: newProduct.sexe,
+          category: newProduct.category,
+          description: newProduct.description,
+          userId: newProduct.userId,
+        });
         handleIsUpdating();
       } else {
         console.error("Erreur lors de la modification");

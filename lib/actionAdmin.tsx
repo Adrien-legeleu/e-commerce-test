@@ -53,8 +53,10 @@ export const createProduct = async (formData: formDataCreateProps) => {
 export const updateProduct = async (formData: any) => {
   const { name, description, stock, price, sexe, category, userId, productId } =
     formData;
+  console.log(formData, productId, userId);
+
   if (!userId || !productId) {
-    throw new Error("UserId ou productId ne sont pas défini");
+    throw new Error("UserId ou id ne sont pas défini");
   }
   const existingProduct = await prisma.product.findUnique({
     where: { userId, id: productId },
