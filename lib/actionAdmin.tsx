@@ -1,8 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { prisma } from "./prisma";
-import { Category, Sexe } from "@prisma/client";
 import { formDataCreateProps } from "@/components/dashBoard/product/Create";
 
 export const getAllProducts = async (userId: string) => {
